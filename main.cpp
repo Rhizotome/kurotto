@@ -4,8 +4,8 @@
 #include "grille.hpp"
 using namespace std;
 //CONSTANTES
-constexpr int TAILLE = 20; //taille de la grille, l
-constexpr int DIMCASE = 30; //largeur d'une case en pixels
+constexpr int TAILLE = 10; //taille de la grille, l
+constexpr int DIMCASE = 60; //largeur d'une case en pixels
 constexpr int DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
 constexpr int DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
@@ -54,9 +54,18 @@ int main()
             cin >> contrainte[2];
             grille.ajouterContrainte(contrainte);
         }
-        
+
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
         caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
+
+        sf::Text texte;
+        texte.setCharacterSize(DIMCASE-DIMCASE/4);
+        sf::Font arial;
+        if (!arial.loadFromFile("arial.ttf")) {
+            throw ("erreur de chargement de police");
+        }
+        texte.setFont(arial);
+        texte.setFillColor(sf::Color::Black);
 
         sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"test");
         //BOUCLE PRINCIPALE
@@ -67,7 +76,7 @@ int main()
                     window.close();
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille 
+                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille
                     grille[coord.x][coord.y] = noir;
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
@@ -83,6 +92,12 @@ int main()
                             window.draw(caseNoire);
                         }
                     }
+                }
+                const vector<array<int,3>> contraintes = grille.getContraintes();
+                for (auto c : contraintes) {
+                    texte.setString(to_string(c[2]));
+                    texte.setPosition(c[0] * DIMCASE + (c[2] / 10 >= 1 ? DIMCASE / 20 :  2 * DIMCASE / 7), c[1] * DIMCASE);
+                    window.draw(texte);
                 }
                 window.display();
             }

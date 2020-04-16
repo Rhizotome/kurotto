@@ -15,4 +15,5 @@ public:
     Grille(unsigned short int, std::vector<std::array<int,3>> = {});
     std::vector<Etat>& operator[](int);
     void ajouterContrainte(std::array<int,3>);
+    const std::vector<std::array<int,3>>& getContraintes()const;
 };
