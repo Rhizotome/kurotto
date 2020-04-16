@@ -26,7 +26,6 @@ void Grille::ajouterContrainte(array<int,3> newContrainte)
     contraintes.push_back(newContrainte);
 }
 
-const vector<array<int,3>>& Grille::getContraintes()const
-{
+const vector<array<int,3>>& Grille::getContraintes()const{
     return contraintes;
 }
