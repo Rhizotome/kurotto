@@ -4,17 +4,20 @@
 #include "grille.hpp"
 using namespace std;
 //CONSTANTES
-constexpr int TAILLE = 20;
-constexpr int DIMCASE = 30;
-constexpr int DIMX = TAILLE * DIMCASE;
-constexpr int DIMY = TAILLE * DIMCASE;
+constexpr int TAILLE = 20; //taille de la grille, l
+constexpr int DIMCASE = 30; //largeur d'une case en pixels
+constexpr int DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
+constexpr int DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
 sf::Vector2<unsigned short> positionToCoord(sf::Vector2i);
 int main()
 {
     try {
         //SETUP
-        Grille grille(TAILLE);
+        Grille grille(TAILLE); // on crée la grille principale sans contraintes aucunes
+
+
+        // Création de la texture du background
         sf::Texture backgroundTexture;
         backgroundTexture.create(DIMCASE,DIMCASE);
         sf::Uint8 tex[DIMCASE * DIMCASE * 4];
@@ -35,6 +38,9 @@ int main()
         backgroundTexture.update(tex);
         backgroundTexture.setRepeated(true);
         sf::Sprite background(backgroundTexture,sf::IntRect(0,0,DIMX,DIMY));
+
+
+
         cout << "Entrer des valeurs pour les éléments de T (entre un nombre négatif pour i ou j pour sortir de la boucle)." << endl;
         while (true) {
             array<int,3> contrainte;
@@ -48,8 +54,10 @@ int main()
             cin >> contrainte[2];
             grille.ajouterContrainte(contrainte);
         }
+        
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
-        caseNoire.setFillColor(sf::Color::Black);
+        caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
+
         sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"test");
         //BOUCLE PRINCIPALE
         while(window.isOpen()) {
@@ -59,11 +67,11 @@ int main()
                     window.close();
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    auto coord = positionToCoord(sf::Mouse::getPosition(window));
+                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille 
                     grille[coord.x][coord.y] = noir;
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-                    auto coord = positionToCoord(sf::Mouse::getPosition(window));
+                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a clic droit, blanchir la case
                     grille[coord.x][coord.y] = blanc;
                 }
                 window.clear(sf::Color::White);
