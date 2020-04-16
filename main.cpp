@@ -68,9 +68,9 @@ int main()
                 }
                 window.clear(sf::Color::White);
                 window.draw(background);
-                for (int i(0) ; i < TAILLE ; i++){
-                    for (int j(0) ; j < TAILLE ; j++){
-                        if (grille[i][j] == noir){
+                for (int i(0) ; i < TAILLE ; i++) {
+                    for (int j(0) ; j < TAILLE ; j++) {
+                        if (grille[i][j] == noir) {
                             caseNoire.setPosition(i*DIMCASE, j*DIMCASE);
                             window.draw(caseNoire);
                         }
