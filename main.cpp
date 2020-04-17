@@ -52,7 +52,7 @@ int main()
             if (contrainte[1] < 0) break;
             cout << "p : ";
             cin >> contrainte[2];
-            grille.ajouterContrainte(contrainte);
+            grille.appendContrainte(contrainte);
         }
 
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
@@ -82,6 +82,9 @@ int main()
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a clic droit, blanchir la case
                     grille[coord.x][coord.y] = blanc;
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                    cout << (grille.isResolue() ? "résolue" : "erreur") << endl;
                 }
                 window.clear(sf::Color::White);
                 window.draw(background);
