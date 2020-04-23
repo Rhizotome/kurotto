@@ -21,6 +21,7 @@ protected:
     std::set<std::set<std::array<unsigned short int,2>>> forme(std::set<std::set<std::array<unsigned short int,2>>>, unsigned short int)const; // récursif, renvoie la liste contenant tout les ensembles de coordonnées de taille l+1 contenant l'argument récursif
     std::set<std::array<unsigned short int,2>> bordure(const std::set<std::array<unsigned short int, 2>>&)const; // renvoie l'ensemble des coordonnées en bordure de l'argument
     litt toLitt(std::array<unsigned short int, 2>)const;
+    std::array<unsigned short int,2> toCoord(litt l)const;
 public:
     Grille(unsigned short int, std::vector<std::array<int,3>> = {}); // largeur de la grille, ensemble de contraintes
     std::vector<Etat>& operator[](int);
@@ -28,5 +29,6 @@ public:
     const std::vector<std::array<int,3>>& getContraintes()const;
     bool isResolue()const;
     Formule toFormule()const;
+    void resoudre();
 };
 #endif

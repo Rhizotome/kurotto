@@ -4,9 +4,9 @@
 #include <iostream>
 #include <unordered_set>
 #include <set>
-using litt = short int;
+using litt = char;
 template <class T>
-using CInt = std::set<T>;
+using CInt = std::unordered_set<T>;
 template <class T>
 using CExt = std::vector<T>;
 

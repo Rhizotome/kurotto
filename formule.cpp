@@ -9,7 +9,7 @@ void Formule::resoudre1()
     CInt<litt> a{};
     grilleResolue.push_back(a);
     for (auto i : grille) {
-        CExt<CInt<short>> grilleResolueStep{};
+        CExt<CInt<litt>> grilleResolueStep{};
         for (auto j : grilleResolue) {
             for (auto k : i) {
                 auto j2(j);

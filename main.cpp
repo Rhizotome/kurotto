@@ -3,19 +3,22 @@
 #include <algorithm>
 #include "grille.hpp"
 using namespace std;
-//CONSTANTES
-constexpr int TAILLE = 3; //taille de la grille, l
-constexpr int DIMCASE = 80; //largeur d'une case en pixels
-constexpr int DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
-constexpr int DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
-
+int DIMX;
+int DIMY;
+int TAILLE;
+int DIMCASE;
 sf::Vector2<unsigned short> positionToCoord(sf::Vector2i);
 int main()
 {
     try {
+        bool modifiee = false;
+        cin>>TAILLE;
+        DIMCASE = 80; //largeur d'une case en pixels
+        DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
+        DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
+
         //SETUP
         Grille grille(TAILLE); // on crée la grille principale sans contraintes aucunes
-
 
         // Création de la texture du background
         sf::Texture backgroundTexture;
@@ -40,21 +43,6 @@ int main()
         sf::Sprite background(backgroundTexture,sf::IntRect(0,0,DIMX,DIMY));
 
 
-
-        cout << "Entrer des valeurs pour les éléments de T (entre un nombre négatif pour i ou j pour sortir de la boucle)." << endl;
-        while (true) {
-            array<int,3> contrainte;
-            cout << "i : ";
-            cin >> contrainte[0];
-            if (contrainte[0] < 0) break;
-            cout << "j : ";
-            cin >> contrainte[1];
-            if (contrainte[1] < 0) break;
-            cout << "p : ";
-            cin >> contrainte[2];
-            grille.appendContrainte(contrainte);
-        }
-
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
         caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
 
@@ -76,17 +64,27 @@ int main()
                     window.close();
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    modifiee = true;
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille
-                    grille[coord.x][coord.y] = noir;
+                    if (grille[coord.x][coord.y] == noir){
+                        grille[coord.x][coord.y] = blanc;
+                    }
+                    else{
+                        grille[coord.x][coord.y] = noir;
+                    }
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a clic droit, blanchir la case
-                    grille[coord.x][coord.y] = blanc;
+                    modifiee = true;
+                    auto coord = positionToCoord(sf::Mouse::getPosition(window));// si clic droit, créer contrainte
+                    array<int,3> contrainte{coord.x,coord.y,-1};
+                    cout<< "p : ";
+                    cin>>contrainte[2];
+                    grille.appendContrainte(contrainte);
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-                    auto f = grille.toFormule();
-                    f.resoudre1();
-                    std::cout<<f<<std::endl;
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+                    if(modifiee){
+                        grille.resoudre();
+                    }
                 }
                 window.clear(sf::Color::White);
                 window.draw(background);

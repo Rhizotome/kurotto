@@ -161,3 +161,22 @@ litt Grille::toLitt(coordonnee c)const
 {
     return (unsigned short)(c[0] + taille * c[1] + 1);
 }
+
+coordonnee Grille::toCoord(litt l)const
+{
+    if (l < 0){
+        l = -l;
+    }
+    return {(l - 1) % taille, (l - 1) / taille};
+}
+
+void Grille::resoudre(){
+    auto formule = toFormule();
+    formule.resoudre1();
+    if (formule.grilleResolue.size() >= 1){
+        for (auto i : formule.grilleResolue[0]){
+            auto c = this->toCoord(i);
+            cases[c[0]][c[1]] = (i < 0 ? blanc : noir);
+        }
+    }
+}
