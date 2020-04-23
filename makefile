@@ -9,7 +9,7 @@ OBJ := $(SRC:%.cpp=%.o)
 all : $(EXEC_NAME)
 
 clean :
-	rm $(EXEC_NAME) $(OBJ) callgrind*
+	rm $(EXEC_NAME) $(OBJ) callgrind* *.orig
 
 $(EXEC_NAME) : $(OBJ)
 	$(CC) -o $(EXEC_NAME) $(OBJ) $(LIBS)
