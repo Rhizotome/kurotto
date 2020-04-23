@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -std=c++20 -O3 -pthread
+CFLAGS = -Wall -Wextra -std=c++20 -g -pthread
 EXEC_NAME = solveur
 INCLUDES = -I /usr/include/python3.8
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
