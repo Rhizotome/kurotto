@@ -4,8 +4,8 @@
 #include "grille.hpp"
 using namespace std;
 //CONSTANTES
-constexpr int TAILLE = 10; //taille de la grille, l
-constexpr int DIMCASE = 60; //largeur d'une case en pixels
+constexpr int TAILLE = 3; //taille de la grille, l
+constexpr int DIMCASE = 80; //largeur d'une case en pixels
 constexpr int DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
 constexpr int DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
@@ -67,7 +67,7 @@ int main()
         texte.setFont(arial);
         texte.setFillColor(sf::Color::Black);
 
-        sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"test");
+        sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"test",sf::Style::Close);
         //BOUCLE PRINCIPALE
         while(window.isOpen()) {
             sf::Event event;
@@ -84,7 +84,9 @@ int main()
                     grille[coord.x][coord.y] = blanc;
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-                    cout << (grille.isResolue() ? "résolue" : "erreur") << endl;
+                    auto f = grille.toFormule();
+                    f.resoudre1();
+                    std::cout<<f<<std::endl;
                 }
                 window.clear(sf::Color::White);
                 window.draw(background);

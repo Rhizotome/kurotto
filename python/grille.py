@@ -4,7 +4,10 @@
 ##############################################################################
 
 import os
+import sys
 from formule import *
+from copy import copy
+import profile
 class Grille:
     def __init__(self, l=0, *args): # prend en arguments un la largeur voulue pour la grille et un certain nombre de triplet de la forme (i,j,p), avec i,j l'emplacement du cercle contenant p si p>=0 ou rien si p=-1
         if l < 0:
@@ -38,7 +41,7 @@ class Grille:
     def toFormule(self) : # on représente n_{i,j} par (i,j)
         contraintes = Formule([], AND)
         for i in self.T :
-            contraintes.append(Littéral((i[0],i[1]),flag = NOT))
+            contraintes.append(Litteral((i[0],i[1]),flag = NOT))
             if i[2] == -1 :
                 continue
             else :
@@ -48,7 +51,9 @@ class Grille:
                     j.remove((i[0],i[1]))
                     listej = list(j)
                     for k in range(len(j)) :
-                        listej[k] = Littéral(listej[k])
+                        listej[k] = Litteral(listej[k])
+                    for k in bordure(j,self.l) :
+                        listej.append(Litteral(k,NOT))
                     contraintesFormes.append(Formule(listej,AND))
                 contraintes.append(contraintesFormes)
         return contraintes
@@ -70,7 +75,23 @@ def découpages(centre, taille, l): # renvoie un ensemble contenant l'ensemble d
                             formes.append(temp)
         return formes
 
-a = Grille(6, (2,5,2),(1,4,-1))
+def bordure(forme,l):
+    retour = []
+    for i in forme :
+        voisins = {(i[0]-1,i[1]),(i[0]+1,i[1]),(i[0],i[1]-1),(i[0],i[1]+1)}
+        for j in voisins :
+            if j[0] > 0 and j[1] > 0 and j[0] <= l and j[1] <= l and not j in forme :
+                retour.append(j)
+    return retour
+
+a = Grille(3, (1,1,2), (3,2,1))
+sys.setrecursionlimit(1000000)
 print(a)
-print(a.toFormule())
-print(a.toFormule().réduire())
+b=a.toFormule()
+print(b,"\n \n \n")
+# b = Formule([Litteral("c"),Formule([Litteral("a"),Litteral("b")],OR)],AND)
+# print(b)
+# b.reduire()
+# print(b)
+# print(b)
+# print(a.toFormule().réduire()

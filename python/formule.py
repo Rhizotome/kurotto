@@ -1,53 +1,72 @@
 from copy import copy, deepcopy
-# Le but c'est que tout fonctionne par copie à l'exception des constructeurs et modifications simples si la fonction renvoie un objet, cet objet est cependant une copie
 OR = True
 AND = False
 NOT = False
 
-class Littéral :
+class Litteral :
     def __init__(self, valeur, flag = True):
         self.valeur = valeur
-        self.logique = None
         self.flag = flag
+        self.logique = None
 
-    def __eq__(self, other) :
-        return self.__dict__ == other.__dict__
+    def __eq__(self, other):
+        if type(self) == type(other):
+            return self.flag == other.flag and self.valeur == other.valeur
 
-    def simplifier(self) :
-        return copy(self)
+    def simplifier(self):
+        pass
 
-    def isLittéral(self):
+    def isLitteral(self):
         return True
 
-    def __str__(self) :
-        représentation = ""
-        if self.flag == NOT :
-            représentation += "!"
-        représentation += str(self.valeur)
-        return représentation
+    def __str__(self):
+        if self.valeur == True and self.flag == NOT:
+            return("False")
+        return ("" if self.flag else "!") + str(self.valeur)
 
-    def profondeur(self) :
+    def profondeur(self):
         return 0
 
-class Formule :
-    def __init__(self, valeur, logique, flag = True) :
+    def inverse(self):
+        return Litteral(self.valeur, not self.flag)
+
+    def reduire(self):
+        pass
+
+littTrue = Litteral(True)
+littFalse = Litteral(True, NOT)
+
+class Formule:
+    def __init__(self, sousFormules, logique, flag = True):
+        self.sousFormules = sousFormules
         self.logique = logique
         self.flag = flag
-        self.sousFormules = valeur
 
-    def __eq__(self, other) :
-        if type(self) == type(other) :
-            return self.__dict__ == other.__dict__
-        else :
-            return False
+    def __getitem__(self,key):
+        if type(key) is slice:
+            return Formule(self.sousFormules[key],self.logique,self.flag)
+        return self.sousFormules[key]
 
+    def __setitem__(self,key, valeur): # si setitem reçoit une slice en argument, retourne une liste et pas une formule
+        self.sousFormules[key] = valeur
+
+    def __len__(self):
+        return len(self.sousFormules)
+
+    def append(self, item):
+        if not item in self:
+            self.sousFormules.append(item)
+
+    def isLitteral(self):
+        return False
+        
     def __str__(self):
         représentation = ""
         if self.flag == NOT :
             représentation += "!"
         représentation += "("
         if len(self) == 0:
-            raise ValueError("Formule de taille nulle")
+            return "()"
         else :
             for i in range(len(self.sousFormules)-1) :
                 représentation += str(self[i])
@@ -59,153 +78,136 @@ class Formule :
         représentation += ")"
         return représentation
 
-    def append(self, a) :
-        self.sousFormules.append(a)
-    
-    def __len__(self) :
-        return len(self.sousFormules)
-
-    def profondeur(self) :
-        profondeur = 0
-        for i in self :
-            profondeur = max(profondeur, i.profondeur() + 1)
-        return profondeur
-
-    def __add__(self, a) :
-        if not (type(a) is Formule) :
-            raise ValueError("ajouter autre chose qu'une formule à une formule impossible")
-        elif a.logique != self.logique :
-            raise ValueError("impossible d'ajouter des formules aux logiques différentes")
-        elif a.flag != self.flag :
-            raise ValueError("impossible d'ajouter des formules aux flags différents")
-        else :
-            nouvelleFormule = deepcopy(self)
-            for i in range(0, len(a)) :
-                nouvelleFormule.append(deepcopy(a[i]))
-            return nouvelleFormule
-
-    def __getitem__(self, key) :
-        if type(key) is int :
-            return deepcopy(self.sousFormules[key])
-        elif type(key) is slice :
-            nouvelleFormule = Formule([], self.logique, flag = self.flag)
-            for i in range(key.start,key.stop) :
-                nouvelleFormule.append(deepcopy(self[i]))
-            return nouvelleFormule
-
-    def __iter__(self) :
-        return iter(self.sousFormules)
-
-    def __setitem__(self, key, value) :
-        if not(type(key) is int) :
-            raise ValueError("setitem prend un int")
-        else :
-            self.sousFormules[key] = value
-
-    def isLittéral(self) :
+    def __contains__(self, item):
+        if type(self) == type(item):
+            for i in item :
+                if not i in self :
+                    return False
+            return True
+        for i in self:
+            if i == item:
+                return True
         return False
 
-    def __contains__(self, item) :
-        return item in self.sousFormules
+    def __eq__(self, other):
+        if type(other) != type(self):
+            return False
+        if len(self) != len(other):
+            return False
+        for i in self:
+            if not (i in other):
+                return False
+        return True
 
-    def simplifier(self) :
-        temp = deepcopy(self)
+    def remove(self, item):
+        return self.sousFormules.remove(item)
+
+    def count(self,item):
+        return self.sousFormules.count(item)
+
+    def simplifier(self):
+        # Première chose :
+        if len(self) == 0 :
+            self.append(littFalse if self.logique == OR else littTrue)
+            return
         # Loi de Morgan
-        if temp.flag == NOT :
-            temp.flag = not temp.flag
-            temp.logique = not temp.logique
-            for i in temp : 
+        if self.flag == NOT:
+            self.flag = True
+            self.logique = not self.logique
+            for i in self :
                 i.flag = not i.flag
         # Récursion
-        for i in range(len(temp)) :
-            temp[i] = temp[i].simplifier()
-        # Concaténation de formules de même nature : (a && (b && c)) devient (a && b && c)
-        nouvelleFormule = Formule([], temp.logique, flag = temp.flag)
-        for i in temp :
-            if i.logique != nouvelleFormule.logique and (i.isLittéral() or len(i) > 1) : # N'est pas vérifiée que si i est de la même logique que nouvelleFormule ou est une formule de taille 1
-                nouvelleFormule.append(i)
-            else :
-                i.logique = nouvelleFormule.logique
-                nouvelleFormule += i
-        # Suppression de littéraux ou formules en double
-        nouvelleFormule.suppressionDoublons()
-        return nouvelleFormule
-
-    def suppressionDoublons(self):
-        formuleSansDoubles = Formule([], self.logique)
         for i in self :
-            if not i in formuleSansDoubles :
-                formuleSansDoubles.append(i)
-        self = formuleSansDoubles
+            i.simplifier()
+        # Repli des ou sur les ou et des et sur les et
+        for i in self[:] : #op
+            if i.logique == self.logique or (not i.isLitteral() and len(i) == 1):
+                for j in i :
+                    self.append(j)
+                self.remove(i)
+        # Déjà, quand même, voilà quoi, on commence par simplifier les formules contenant True ou False
+        while littTrue in self and len(self)>1:
+            if self.logique == OR :
+                self.sousFormules = [littTrue]
+                return
+            else :
+                self.remove(littTrue)
+        while littFalse in self and len(self)>1:
+            if self.logique == AND :
+                self.sousFormules = [littFalse]
+                return
+            else :
+                self.remove(littFalse)
+        # Suppression des doublons
+        for i in self[:] : #op
+            while self.sousFormules.count(i) > 1:
+                self.remove(i)
+        # Suppression des inverses
+        for i in filter(lambda item : item.isLitteral(), self):
+            if i.inverse() in self :
+                if self.logique == AND :
+                    self.sousFormules = [littFalse]
+                else :
+                    self.sousFormules = [littTrue]
+                return
+        # Suppression des sousFormules comprenant d'autres sousFormules
+        toRemove = []
+        for i in range(len(self)):
+            for j in range(i+1, len(self)):
+                if i in toRemove:
+                    break
+                if not self[i].isLitteral():
+                    if self[j] in self[i] :
+                        toRemove.append(i)
+        toRemove.sort(reverse=True)
+        for i in toRemove:
+            del self.sousFormules[i]
 
-    def distribuer(self) :
-        if self.flag == NOT :
-            raise ValueError("une formule doit être simplifiée avant d'être développée")
-        elif len(self) == 1 :
-            nouvelleFormule = Formule([], not self.logique)
+    def profondeur(self):
+        return max([i.profondeur() for i in self]) + 1
+
+    def distribuer(self):
+        if len(self) == 1:
+            self.sousFormules = self[0].sousFormules
+            self.logique = not self.logique
+            for i in range(len(self)) :
+                self[i] = Formule([self[i]],not self.logique)
+        else : # len(self) > 1
+            rec = self[1:len(self)]
+            if len(rec) >= 1:
+                rec.distribuer()
+            newFormule = Formule([], self.logique)
             for i in self[0] :
-                nouvelleFormule.append(Formule([copy(i)], self.logique))
-            return nouvelleFormule
-        elif len(self) > 1 :
-            formuleRéccurence = self[1:len(self)].distribuer()
-            print(formuleRéccurence)
-            nouvelleFormule = Formule([], not self.logique)
-            for i in self[0] :
-                for j in formuleRéccurence :
-                    nouvelleSousFormule = Formule(copy(j.sousFormules), self.logique)
-                    if not i in nouvelleSousFormule :
-                        nouvelleSousFormule.append(i)
-                    nouvelleFormule.append(nouvelleSousFormule)
-            nouvelleFormule.suppressionDoublons()
-            return nouvelleFormule
+                for j in rec :
+                    j2 = deepcopy(j)
+                    j2.append(i)
+                    newFormule.append(j2)
+            self.sousFormules=newFormule.sousFormules
+            self.logique = not self.logique
 
-    def réduire(self) :
-        temp = self.simplifier() # On utilise le fait que simplifier produise une deepcopy
-        if temp.profondeur() == 1 :
-            return temp
-        elif temp.profondeur() == 2 :
-            for i in range(len(temp)) :
-                if temp[i].isLittéral() :
-                    temp[i] = Formule([temp[i]],not temp.logique)
-            print("temp : " + str(temp))
-            return temp.distribuer().simplifier()
-        elif temp.profondeur() > 2 :
-            for i in range(len(temp)) :
-                if temp[i].profondeur() > 1 :
-                    temp[i] = temp[i].réduire()
-            temp = temp.réduire()
-            return temp
+    def reduire(self):
+        self.simplifier()
+        if self.profondeur() == 1 :
+            return
+        elif self.profondeur() == 2 :
+            for i in range(len(self)):
+                if self[i].isLitteral() :
+                    self[i] = Formule([self[i]], not self.logique)
+            self.distribuer()
+            self.simplifier()
+        else : # profondeur() > 2
+            for i in self :
+                i.reduire()
+            self.reduire()
 
-    def FNC(self) :
-        temp = self.simplifier()
-        if temp.logique == OR :
-            temp = temp.réduire()
-        return temp
-
-# print(c.profondeur())
-# print(c.simplifier().profondeur())
-# print(c.simplifier())
-# a = Formule([Formule([Littéral("a"),Littéral("a"),Littéral("e"),Littéral("h")],OR),Formule([Littéral("c"),Littéral("d"),Littéral("f")],OR),Formule([Littéral("j"),Littéral("k")],OR),Formule([Littéral("j"),Littéral("k")],OR)],AND)
-# print(a)
-# print(a.simplifier())
-# print(a.FNC())
-# print(a.réduire())
-# b = a.réduire()
-# print(b.réduire())
-# print(a.réduire().distribuer())
+    # Testing grounds
+# print(Litteral("a",NOT))
+# print(Formule([Litteral("a",NOT),Litteral("b")],OR))
+# a = Formule([Formule([Litteral("a"),Litteral("a"),Litteral("a"),Litteral("e"),Litteral("h")],AND),Formule([Litteral("c"),Litteral("d"),Litteral("f")],OR),Formule([Litteral("k"),Litteral("j"),Formule([Litteral("a"),Litteral("b")],OR),Formule([Litteral("c"),Litteral("l")],OR)],OR),Formule([Formule([Litteral("b")],AND),Litteral("j"),Litteral("k")],OR)],AND)
 # print(a)
 # print(a.profondeur())
-# print(b)
-
-# a = Formule([Formule([Littéral("a"), Formule([Littéral("b"),Littéral("c")],AND,flag = AND)],OR), Littéral("e")], AND)
+# a.simplifier()
 # print(a)
-# print(a.réduire())
-# print(a.FNC())
-
- # print(c)
- # print(c.simplifier())
- # a = Proposition(Logique.AND, Proposition(Logique.OR, Littéral("a"),Littéral("b"),Littéral("c")), Proposition(Logique.OR,     Littéral("c"),Littéral("d")))
- # print(a)
- # b = a.réduire()
- # print(b)
-
+# print(a.profondeur())
+# a.reduire()
+# print(a)

@@ -61,3 +61,103 @@ unsigned short Grille::tailleZone(set<coordonnee> centre)const
     }
     return centre.size() == tailleCentreInitiale ? tailleCentreInitiale : tailleZone(centre);
 }
+
+Formule Grille::toFormule()const
+{
+    CExt<CExt<CInt<litt>>> contenu;
+    for (auto contrainte : contraintes) {
+        CExt<CInt<litt>> contrainteSousFormule;
+        if (contrainte[2] == -1) {
+            contrainteSousFormule = {{-toLitt({contrainte[0],contrainte[1]})}};
+            contenu.push_back(contrainteSousFormule);
+            continue;
+        }
+        if (contrainte[2] == 0){
+            contrainteSousFormule = {{-toLitt({contrainte[0],contrainte[1]})}};
+            vector<coordonnee> voisins;
+            if (contrainte[0] >= 1)
+                voisins.push_back({contrainte[0]-1,contrainte[1]});
+            if (contrainte[0] < taille-1)
+                voisins.push_back({contrainte[0]+1,contrainte[1]});
+            if (contrainte[1] >= 1)
+                voisins.push_back({contrainte[0],contrainte[1]-1});
+            if (contrainte[1] < taille - 1)
+                voisins.push_back({contrainte[0],contrainte[1]+1});
+            for (auto k : voisins) {
+                contrainteSousFormule.back().insert({-toLitt(k)});
+            }
+            contenu.push_back(contrainteSousFormule);
+            continue;
+        }
+        for (auto i : forme({{{contrainte[0],contrainte[1]}}},contrainte[2])) {
+            contrainteSousFormule.push_back({});
+            auto bordureI = bordure(i);
+            i.erase({contrainte[0],contrainte[1]});
+            bordureI.insert({contrainte[0],contrainte[1]});
+            for (auto j : i) {
+                contrainteSousFormule.back().insert({toLitt(j)});
+            }
+            for (auto j : bordureI) {
+                contrainteSousFormule.back().insert({-toLitt(j)});
+            }
+        }
+        contenu.push_back(contrainteSousFormule);
+    }
+    return Formule{contenu,{}};
+}
+
+set<set<coordonnee>> Grille::forme(set<set<coordonnee>> centre, unsigned short nbCases)const
+{
+    if (nbCases <= 0) {
+        return centre;
+    }
+    auto ensembleRec = forme(centre, nbCases - 1);
+    set<set<coordonnee>> retour;
+    for (auto i : ensembleRec) {
+        for (auto j : i) {
+            vector<coordonnee> voisins;
+            if (j[0] >= 1)
+                voisins.push_back({j[0]-1,j[1]});
+            if (j[0] < taille-1)
+                voisins.push_back({j[0]+1,j[1]});
+            if (j[1] >= 1)
+                voisins.push_back({j[0],j[1]-1});
+            if (j[1] < taille - 1)
+                voisins.push_back({j[0],j[1]+1});
+            for (auto k : voisins) {
+                auto temp = i;
+                temp.insert({k});
+                if (temp.size() == nbCases + 1) {
+                    retour.insert({temp});
+                }
+            }
+        }
+    }
+    return retour;
+}
+
+set<coordonnee> Grille::bordure(const set<coordonnee> &centre)const
+{
+    set<coordonnee> retour{};
+    for (auto i : centre) {
+        vector<coordonnee> voisins;
+        if (i[0] >= 1)
+            voisins.push_back({i[0]-1,i[1]});
+        if (i[0] < taille-1)
+            voisins.push_back({i[0]+1,i[1]});
+        if (i[1] >= 1)
+            voisins.push_back({i[0],i[1]-1});
+        if (i[1] < taille- 1)
+            voisins.push_back({i[0],i[1]+1});
+        for (auto j : voisins) {
+            if (!centre.contains(j))
+                retour.insert({j});
+        }
+    }
+    return retour;
+}
+
+litt Grille::toLitt(coordonnee c)const
+{
+    return (unsigned short)(c[0] + taille * c[1] + 1);
+}
