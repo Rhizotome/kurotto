@@ -66,10 +66,10 @@ int main()
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     modifiee = true;
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille
-                    if (grille[coord.x][coord.y] == noir){
+                    if (grille[coord.x][coord.y] == noir) {
                         grille[coord.x][coord.y] = blanc;
                     }
-                    else{
+                    else {
                         grille[coord.x][coord.y] = noir;
                     }
                 }
@@ -82,7 +82,7 @@ int main()
                     grille.appendContrainte(contrainte);
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-                    if(modifiee){
+                    if(modifiee) {
                         grille.resoudre();
                     }
                 }

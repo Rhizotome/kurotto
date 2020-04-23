@@ -72,7 +72,7 @@ Formule Grille::toFormule()const
             contenu.push_back(contrainteSousFormule);
             continue;
         }
-        if (contrainte[2] == 0){
+        if (contrainte[2] == 0) {
             contrainteSousFormule = {{-toLitt({contrainte[0],contrainte[1]})}};
             vector<coordonnee> voisins;
             if (contrainte[0] >= 1)
@@ -164,17 +164,18 @@ litt Grille::toLitt(coordonnee c)const
 
 coordonnee Grille::toCoord(litt l)const
 {
-    if (l < 0){
+    if (l < 0) {
         l = -l;
     }
     return {(l - 1) % taille, (l - 1) / taille};
 }
 
-void Grille::resoudre(){
+void Grille::resoudre()
+{
     auto formule = toFormule();
     formule.resoudre1();
-    if (formule.grilleResolue.size() >= 1){
-        for (auto i : formule.grilleResolue[0]){
+    if (formule.grilleResolue.size() >= 1) {
+        for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);
             cases[c[0]][c[1]] = (i < 0 ? blanc : noir);
         }

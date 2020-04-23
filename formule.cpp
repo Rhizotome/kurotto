@@ -19,7 +19,8 @@ void Formule::resoudre1()
                         goto label;
                 }
                 grilleResolueStep.push_back(j2);
-                label:;
+label:
+                ;
             }
         }
         grilleResolue = move(grilleResolueStep);
