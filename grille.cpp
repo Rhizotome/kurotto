@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "grille.hpp"
 using namespace std;
 using coordonnee = array<unsigned short int,2>;
@@ -174,6 +175,7 @@ void Grille::resoudre()
 {
     auto formule = toFormule();
     formule.resoudre1();
+    
     if (formule.grilleResolue.size() >= 1) {
         for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);

@@ -1,6 +1,7 @@
 #ifndef FORMULE_H
 #define FORMULE_H
 #include <vector>
+#include <fstream>
 #include <iostream>
 #include <unordered_set>
 #include <set>
