@@ -20,11 +20,24 @@ vector<Etat>& Grille::operator[](int i)
     return cases[i];
 };
 
+
+void Grille::setCase(int x,int y,Etat e){
+    (*this)[x][y] = e;
+}
+
+Etat Grille::getCase(int x, int y){
+    return (*this)[x][y];
+}
+
 void Grille::appendContrainte(array<int,3> newContrainte)
 {
     if (newContrainte[0] < 0 || newContrainte[0] >= taille || newContrainte[1] < 0 || newContrainte[1] >= taille || newContrainte[2] < -1)
         throw("contrainte incorrecte");
     contraintes.push_back(newContrainte);
+}
+
+void Grille::ajouterContrainte(int i, int j, int p){
+    appendContrainte(array<int,3>{i,j,p});
 }
 
 const vector<array<int,3>>& Grille::getContraintes()const
