@@ -50,12 +50,12 @@ ostream& operator<<(ostream& os, const Formule& item)
 }
 
 bool Formule::testCoherence(array<unsigned short,4> key){
-    if (!mapu.contains(key)){
+    if (mapu.contains(key)){
         return mapu[key];
     }
     else{
-        for (litt l : grille[key[1]][key[2]]){
-            if (grille[key[3]][key[4]].contains(-l)){
+        for (litt l : grille[key[0]][key[1]]){
+            if (grille[key[2]][key[3]].contains(-l)){
                 mapu[key] = false;
                 return false;
             }
