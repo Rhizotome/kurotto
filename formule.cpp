@@ -5,7 +5,7 @@
 #include <functional>
 using namespace std;
 
-void Formule::resoudre1()
+void Formule::resoudre()
 {
     const auto procCount = std::thread::hardware_concurrency();
     grilleResolue.clear();
@@ -23,7 +23,7 @@ void Formule::resoudre1()
             if (iter == threads.end())
                 iter = threads.begin();
         }
-        for (int i(0) ; i < procCount ; i++){
+        for (int i(0) ; i < procCount ; i++) {
             iter++;
             if (iter == threads.end())
                 iter = threads.begin();
@@ -47,18 +47,20 @@ ostream& operator<<(ostream& os, const Formule& item)
 
 mutex Formule::vectorLock;
 
-void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CInt<litt>> &grilleResolueStep,const CExt<CInt<litt>>& sousFormule){
-    for (auto k : sousFormule){
+void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CInt<litt>> &grilleResolueStep,const CExt<CInt<litt>>& sousFormule)
+{
+    for (auto k : sousFormule) {
         auto j(sousFormuleGrilleResolue);
-        for (auto l : k){
+        for (auto l : k) {
             if (sousFormuleGrilleResolue.contains(-l))
-                    goto label;
+                goto label;
             j.insert({l});
 
         }
         vectorLock.lock();
         grilleResolueStep.push_back(j);
         vectorLock.unlock();
-label:;
+label:
+        ;
     }
 }

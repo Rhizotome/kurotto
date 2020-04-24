@@ -21,11 +21,13 @@ vector<Etat>& Grille::operator[](int i)
 };
 
 
-void Grille::setCase(int x,int y,Etat e){
+void Grille::setCase(int x,int y,Etat e)
+{
     (*this)[x][y] = e;
 }
 
-Etat Grille::getCase(int x, int y){
+Etat Grille::getCase(int x, int y)
+{
     return (*this)[x][y];
 }
 
@@ -36,8 +38,9 @@ void Grille::appendContrainte(array<int,3> newContrainte)
     contraintes.push_back(newContrainte);
 }
 
-void Grille::ajouterContrainte(int i, int j, int p){
-    appendContrainte(array<int,3>{i,j,p});
+void Grille::ajouterContrainte(int i, int j, int p)
+{
+    appendContrainte(array<int,3> {i,j,p});
 }
 
 const vector<array<int,3>>& Grille::getContraintes()const
@@ -85,7 +88,7 @@ Formule Grille::toFormule()const
             contenu.push_back(contrainteSousFormule);
             continue;
         }
-        if (contrainte[2] == 0){
+        if (contrainte[2] == 0) {
             contrainteSousFormule = {{-toLitt({contrainte[0],contrainte[1]})}};
             vector<coordonnee> voisins;
             if (contrainte[0] >= 1)
@@ -177,17 +180,18 @@ litt Grille::toLitt(coordonnee c)const
 
 coordonnee Grille::toCoord(litt l)const
 {
-    if (l < 0){
+    if (l < 0) {
         l = -l;
     }
     return {(l - 1) % taille, (l - 1) / taille};
 }
 
-void Grille::resoudre(){
+void Grille::resoudre()
+{
     auto formule = toFormule();
-    formule.resoudre1();
-    if (formule.grilleResolue.size() >= 1){
-        for (auto i : formule.grilleResolue[0]){
+    formule.resoudre();
+    if (formule.grilleResolue.size() >= 1) {
+        for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);
             cases[c[0]][c[1]] = (i < 0 ? blanc : noir);
         }

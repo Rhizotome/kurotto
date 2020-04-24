@@ -16,7 +16,7 @@ class Formule {
 public:
     CExt<CExt<CInt<litt>>> grille;
     CExt<CInt<litt>> grilleResolue;
-    void resoudre1();
+    void resoudre();
     static void concurrentStep(const CInt<litt>&, CExt<CInt<litt>>&, const CExt<CInt<litt>>&);
     static std::mutex vectorLock;
 };
