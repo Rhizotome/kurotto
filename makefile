@@ -21,4 +21,4 @@ exec: $(EXEC_NAME)
 	./$(EXEC_NAME)
 
 dll:
-	$(CC) -shared -o grille_mt.so -lpython3.8 -lboost_python -lboost_system -I/usr/include/python3.8 grillewrapper.cpp grille.cpp -std=c++20 -fPIC -lpthread -O3
+	$(CC) -shared -o grille_mt.so -lboost_python38 -lboost_system -I/usr/include/python3.8 formule.cpp formule.hpp grillewrapper.cc grille.cpp -std=c++20 -fPIC -lpthread -O3 -Wno-undef
