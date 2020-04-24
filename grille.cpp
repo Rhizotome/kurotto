@@ -103,7 +103,7 @@ Formule Grille::toFormule()const
         }
         contenu.push_back(contrainteSousFormule);
     }
-    return Formule{contenu,{}};
+    return Formule(move(contenu));
 }
 
 set<set<coordonnee>> Grille::forme(set<set<coordonnee>> centre, unsigned short nbCases)const
@@ -174,6 +174,7 @@ void Grille::resoudre()
 {
     auto formule = toFormule();
     formule.resoudre1();
+    cout<<formule.grilleResolue.size();
     if (formule.grilleResolue.size() >= 1) {
         for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);

@@ -5,32 +5,36 @@
 #include <functional>
 using namespace std;
 
+Formule::Formule(CExt<CExt<CInt<litt>>> a):grille(a){}
 void Formule::resoudre1()
 {
-    const auto procCount = std::thread::hardware_concurrency();
     grilleResolue.clear();
-    CInt<litt> a{};
-    grilleResolue.push_back(a);
-    for (auto i : grille) {
-        CExt<CInt<litt>> grilleResolueStep{};
-        vector<thread> threads(procCount);
-        auto iter = threads.begin();
-        for (auto j : grilleResolue) {
-            if (iter->joinable())
-                iter->join();
-            *iter = thread(concurrentStep,j,ref(grilleResolueStep),i);
-            iter++;
-            if (iter == threads.end())
-                iter = threads.begin();
+    vector<unsigned short> combinaison(grille.size());
+    fill(combinaison.begin(),combinaison.end(),0);
+debutBoucle: while (true){
+        for (unsigned short i(0) ; i < grille.size() ; i++){
+            for (unsigned short j(i + 1) ; j < grille.size() ; j++){
+                if (!testCoherence({i,combinaison[i],j,combinaison[j]})){ // on passe à la combinaison suivante et on reboucle
+                    for (unsigned short k(0) ; k < grille.size() ; k++){
+                        if (combinaison[k] != grille[k].size() - 1){
+                            combinaison[k]++;
+                            goto debutBoucle;
+                        }
+                        else{
+                            combinaison[k] = 0;
+                        }
+                    }
+                    return; // le dernière combinaison est atteinte, tout est fini
+                }
+            }
         }
-        for (int i(0) ; i < procCount ; i++){
-            iter++;
-            if (iter == threads.end())
-                iter = threads.begin();
-            if (iter->joinable())
-                iter->join();
+        // la combinaison fonctionne
+        CInt<litt> solution;
+        for (unsigned short i(0) ; i < grille.size() ; i++){
+            solution.insert(grille[i][combinaison[i]].begin(),grille[i][combinaison[i]].end());
         }
-        grilleResolue = move(grilleResolueStep);
+        grilleResolue.push_back(solution);
+        return;
     }
 }
 
@@ -45,20 +49,18 @@ ostream& operator<<(ostream& os, const Formule& item)
     return os;
 }
 
-mutex Formule::vectorLock;
-
-void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CInt<litt>> &grilleResolueStep,const CExt<CInt<litt>>& sousFormule){
-    for (auto k : sousFormule){
-        auto j(sousFormuleGrilleResolue);
-        for (auto l : k){
-            if (sousFormuleGrilleResolue.contains(-l))
-                    goto label;
-            j.insert({l});
-
+bool Formule::testCoherence(array<unsigned short,4> key){
+    if (!mapu.contains(key)){
+        return mapu[key];
+    }
+    else{
+        for (litt l : grille[key[1]][key[2]]){
+            if (grille[key[3]][key[4]].contains(-l)){
+                mapu[key] = false;
+                return false;
+            }
         }
-        vectorLock.lock();
-        grilleResolueStep.push_back(j);
-        vectorLock.unlock();
-label:;
+        mapu[key] = true;
+        return true;
     }
 }
