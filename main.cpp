@@ -13,7 +13,7 @@ int main()
     try {
         bool modifiee = false;
         cin>>TAILLE;
-        DIMCASE = 80; //largeur d'une case en pixels
+        DIMCASE = 50; //largeur d'une case en pixels
         DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
         DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
@@ -55,7 +55,7 @@ int main()
         texte.setFont(arial);
         texte.setFillColor(sf::Color::Black);
 
-        sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"test",sf::Style::Close);
+        sf::RenderWindow window(sf::VideoMode(DIMY,DIMX),"Kurotto",sf::Style::Close);
         //BOUCLE PRINCIPALE
         while(window.isOpen()) {
             sf::Event event;

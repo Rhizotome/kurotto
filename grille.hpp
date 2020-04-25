@@ -23,12 +23,9 @@ protected:
     litt toLitt(std::array<unsigned short int, 2>)const;
     std::array<unsigned short int,2> toCoord(litt l)const;
 public:
-    Etat getCase(int,int);
-    void setCase(int,int,Etat);
     Grille(unsigned short int, std::vector<std::array<int,3>> = {}); // largeur de la grille, ensemble de contraintes
     std::vector<Etat>& operator[](int);
     void appendContrainte(std::array<int,3>);
-    void ajouterContrainte(int,int,int);
     const std::vector<std::array<int,3>>& getContraintes()const;
     bool isResolue()const;
     Formule toFormule()const;
