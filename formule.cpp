@@ -50,12 +50,10 @@ mutex Formule::vectorLock;
 void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CInt<litt>> &grilleResolueStep,const CExt<CInt<litt>>& sousFormule)
 {
 label: for (auto k : sousFormule) {
+        auto j(sousFormuleGrilleResolue);
         for (auto l : k) {
             if (sousFormuleGrilleResolue.contains(-l))
                 goto label;
-        }
-        auto j(sousFormuleGrilleResolue);
-        for (auto l : k) {
             j.insert({l});
 
         }
