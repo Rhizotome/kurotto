@@ -15,7 +15,7 @@ using CExt = std::vector<T>;
 
 class Formule {
 public:
-    CExt<CExt<CInt<litt>>> grille;
+    CExt<CExt<CInt<litt>>> grille; 
     CExt<CInt<litt>> grilleResolue;
     void resoudre();
     static void concurrentStep(const CInt<litt>&, CExt<CInt<litt>>&, const CExt<CInt<litt>>&);

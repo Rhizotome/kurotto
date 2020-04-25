@@ -7,7 +7,7 @@ using namespace std;
 
 void Formule::resoudre()
 {
-    const auto procCount = std::thread::hardware_concurrency();
+    const auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
     grilleResolue.clear();
     CInt<litt> a{};
     grilleResolue.push_back(a);
