@@ -1,5 +1,6 @@
 #include <iostream>
 #include "grille.hpp"
+#include <algorithm> 
 using namespace std;
 using coordonnee = array<unsigned short int,2>;
 
@@ -188,6 +189,7 @@ coordonnee Grille::toCoord(litt l)const
 
 void Grille::resoudre()
 {
+    sort(contraintes.begin(),contraintes.end(),[](array<int,3>a, array<int,3>b){return a[2] < b[2];});
     auto formule = toFormule();
     formule.resoudre();
     if (formule.grilleResolue.size() >= 1) {
