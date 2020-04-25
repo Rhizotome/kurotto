@@ -6,11 +6,9 @@
 #include <unordered_set>
 #include <set>
 #include <mutex>
-#include "sparsepp/sparsepp/spp.h"
-
 using litt = char;
 template <class T>
-using CInt = spp::sparse_hash_set<T>;
+using CInt = std::unordered_set<T>;
 template <class T>
 using CExt = std::vector<T>;
 
