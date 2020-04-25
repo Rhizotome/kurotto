@@ -1,8 +1,8 @@
 CC = g++
-CFLAGS = -Wall -Wextra -std=c++20 -g -pthread
+CFLAGS = -Wall -Wextra -std=c++20 -O3 -pthread
 EXEC_NAME = solveur
 INCLUDES = -I /usr/include/python3.8
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lpthread
 SRC = $(wildcard *.cpp) 
 OBJ := $(SRC:%.cpp=%.o)
 
@@ -19,3 +19,6 @@ $(EXEC_NAME) : $(OBJ)
 
 exec: $(EXEC_NAME)
 	./$(EXEC_NAME)
+
+dll:
+	$(CC) -shared -o grille_mt.so -lboost_python38 -lboost_system -I/usr/include/python3.8 formule.cpp formule.hpp grillewrapper.cc grille.cpp -std=c++20 -fPIC -lpthread -O3 -Wno-undef
