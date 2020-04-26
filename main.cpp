@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include "grille.hpp"
+
 using namespace std;
 int DIMX;
 int DIMY;
@@ -92,7 +93,7 @@ int main()
                     if(modifiee) {
                         cout<<endl<<"Résolution en cours . . . . . "<<flush;
                         grille.resoudre();
-                        cout<<"Terminé"<<endl;
+                        cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
                     }
                 }
                 window.clear(sf::Color::White);

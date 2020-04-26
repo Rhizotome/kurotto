@@ -4,7 +4,7 @@
 using namespace std;
 using coordonnee = array<unsigned short int,2>;
 
-Grille::Grille(unsigned short int l, vector<array<int,3>> c): taille(l), contraintes(c), cases(l)
+Grille::Grille(unsigned short int l, vector<array<int,3>> c): nbSolutions(0), taille(l), contraintes(c), cases(l)
 {
     for (auto i : c) {
         if (i[0] < 0 || i[0] >= taille || i[1] < 0 || i[1] >= taille || i[2] <= -1)
@@ -31,15 +31,6 @@ void Grille::appendContrainte(array<int,3> newContrainte)
 const vector<array<int,3>>& Grille::getContraintes()const
 {
     return contraintes;
-}
-
-bool Grille::isResolue()const
-{
-    for (auto c : contraintes) {
-        if (cases[c[0]][c[1]] != blanc || (c[2] != -1 && tailleZone(c[0],c[1]) - 1 != c[2]))
-            return false;
-    }
-    return true;
 }
 
 unsigned short Grille::tailleZone(unsigned short a, unsigned short b)const
@@ -176,10 +167,15 @@ void Grille::resoudre()
     sort(contraintes.begin(),contraintes.end(),[](array<int,3>a, array<int,3>b){return a[2] < b[2];});
     auto formule = toFormule();
     formule.resoudre();
+    nbSolutions = formule.grilleResolue.size();
     if (formule.grilleResolue.size() >= 1) {
         for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);
             cases[c[0]][c[1]] = (i < 0 ? blanc : noir);
         }
     }
+}
+
+int Grille::nombreSolutions()const{
+    return nbSolutions;
 }
