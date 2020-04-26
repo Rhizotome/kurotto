@@ -12,8 +12,10 @@ int main()
 {
     try {
         bool modifiee = false;
+        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
+        cout<<"Entrez la taille de la grille : ";
         cin>>TAILLE;
-        DIMCASE = 50; //largeur d'une case en pixels
+        DIMCASE = 60; //largeur d'une case en pixels
         DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
         DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
@@ -45,6 +47,11 @@ int main()
 
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
         caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
+
+        sf::CircleShape cercle(DIMCASE/2 - DIMCASE/20, 100);
+        cercle.setFillColor(sf::Color::White);
+        cercle.setOutlineThickness(-DIMCASE/25);
+        cercle.setOutlineColor(sf::Color::Black);
 
         sf::Text texte;
         texte.setCharacterSize(DIMCASE-DIMCASE/4);
@@ -83,7 +90,9 @@ int main()
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     if(modifiee) {
+                        cout<<endl<<"Résolution en cours . . . . . "<<flush;
                         grille.resoudre();
+                        cout<<"Terminé"<<endl;
                     }
                 }
                 window.clear(sf::Color::White);
@@ -98,9 +107,13 @@ int main()
                 }
                 const vector<array<int,3>> contraintes = grille.getContraintes();
                 for (auto c : contraintes) {
-                    texte.setString(to_string(c[2]));
-                    texte.setPosition(c[0] * DIMCASE + (c[2] / 10 >= 1 ? DIMCASE / 20 :  2 * DIMCASE / 7), c[1] * DIMCASE);
-                    window.draw(texte);
+                    cercle.setPosition(c[0] * DIMCASE + DIMCASE / 20, c[1] * DIMCASE + DIMCASE / 20);
+                    window.draw(cercle);
+                    if (c[2] != -1){
+                        texte.setString(to_string(c[2]));
+                        texte.setPosition(c[0] * DIMCASE + (c[2] / 10 >= 1 ? DIMCASE / 20 :  2 * DIMCASE / 7), c[1] * DIMCASE);
+                        window.draw(texte);
+                    }
                 }
                 window.display();
             }
