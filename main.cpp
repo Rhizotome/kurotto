@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include "grille.hpp"
+#include <thread>
 
 using namespace std;
 int DIMX;
@@ -92,7 +93,7 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     if(modifiee) {
                         cout<<endl<<"Résolution en cours . . . . . "<<flush;
-                        grille.resoudre();
+                        grille.resoudre(); 
                         cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
                     }
                 }
