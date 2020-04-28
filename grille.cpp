@@ -180,6 +180,6 @@ void Grille::resoudre()
     }
 }
 
-int Grille::nombreSolutions()const{
+unsigned long long int Grille::nombreSolutions()const{
     return nbSolutions;
 }

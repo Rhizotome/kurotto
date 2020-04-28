@@ -13,7 +13,7 @@ enum Etat {
 };
 class Grille {
 protected:
-    int nbSolutions;
+    unsigned long long int nbSolutions;
     unsigned short int taille;
     std::vector<std::array<int,3>> contraintes;
     std::vector<std::vector<Etat>> cases;
@@ -30,6 +30,6 @@ public:
     const std::vector<std::array<int,3>>& getContraintes()const;
     Formule toFormule()const;
     void resoudre(); // change le contenu de la grille pour en faire une solution
-    int nombreSolutions()const; // renvoie le nombre de solution trouvées lors du dernier appel de resoudre()
+    unsigned long long int nombreSolutions()const; // renvoie le nombre de solution trouvées lors du dernier appel de resoudre()
 };
 #endif

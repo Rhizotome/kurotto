@@ -8,6 +8,8 @@ using namespace std;
 void Formule::resoudre()
 {
     const auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
+    if (procCount == 0)
+        throw("Multithreading indisponible");
     grilleResolue.clear();
     CInt<litt> a{};
     grilleResolue.push_back(a);
