@@ -6,6 +6,9 @@
 using namespace std;
 using coordonnee = array<unsigned short int,2>;
 
+void Grille::clear(){
+    contraintes.clear();
+}
 Grille::Grille(unsigned short int l, vector<array<int,3>> c): nbSolutions(0), taille(l), contraintes(c), cases(l)
 {
     for (auto i : c) {

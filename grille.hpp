@@ -33,5 +33,6 @@ public:
     void resoudre(); // change le contenu de la grille pour en faire une solution
     unsigned long long int nombreSolutions()const; // renvoie le nombre de solution trouvées lors du dernier appel de resoudre()
     void fromFile(std::string);
+    void clear();
 };
 #endif

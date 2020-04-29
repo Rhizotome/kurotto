@@ -15,7 +15,7 @@ int main()
 {
     try {
         bool modifiee = false;
-        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Tapez entrée pour taper dans le terminal le chemin vers un fichier contenant les données des contraintes d'une grille (vous pouvez essayer exemple1.txt dans une grille de taille 5 ou exemple2.txt dans une grille de taille 6). Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
+        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Tapez entrée pour taper dans le terminal le chemin vers un fichier contenant les données des contraintes d'une grille (vous pouvez essayer exemple1.txt dans une grille de taille 5 ou exemple2.txt dans une grille de taille 6). Tapez Backspace pour supprimer toutes les contraintes. Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
         cout<<"Entrez la taille de la grille : ";
         cin>>TAILLE;
         DIMCASE = 60; //largeur d'une case en pixels
@@ -101,12 +101,18 @@ int main()
                         cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
                     }
                 }
+                // Entrée : charger une grille depuis un fichier
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-                    cout << "chemin relatif ou absolu vers une grille : " << endl;
+                    cout << "chemin relatif vers une grille : " << flush;
                     string path;
                     cin>>path;
                     grille.fromFile(path);
-                    this_thread::sleep_for (std::chrono::seconds(1));
+                    modifiee = true;
+                    this_thread::sleep_for(chrono::milliseconds(500)); // on attend une demi seconde pour ne pas capter deux fois l'input
+                }
+                // Backspace : clear la grille
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
+                    grille.clear();
                 }
                 // On dessine le fond
                 window.clear(sf::Color::White);
