@@ -20,5 +20,3 @@ $(EXEC_NAME) : $(OBJ)
 exec: $(EXEC_NAME)
 	./$(EXEC_NAME)
 
-dll:
-	$(CC) -shared -o grille_mt.so -lboost_system -lboost_python38 -I/usr/include/python3.8 formule.cpp formule.hpp grillewrapper.cc grille.cpp -std=c++20 -fPIC -lpthread -O3 -Wno-undef -Wl,-rpath,.

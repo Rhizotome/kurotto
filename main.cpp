@@ -1,8 +1,9 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include "grille.hpp"
-#include <thread>
 
 using namespace std;
 int DIMX;
@@ -14,7 +15,7 @@ int main()
 {
     try {
         bool modifiee = false;
-        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
+        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Tapez entrée pour taper dans le terminal le chemin vers un fichier contenant les données des contraintes d'une grille (vous pouvez essayer exemple1.txt dans une grille de taille 5 ou exemple2.txt dans une grille de taille 6). Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
         cout<<"Entrez la taille de la grille : ";
         cin>>TAILLE;
         DIMCASE = 60; //largeur d'une case en pixels
@@ -46,15 +47,15 @@ int main()
         backgroundTexture.setRepeated(true);
         sf::Sprite background(backgroundTexture,sf::IntRect(0,0,DIMX,DIMY));
 
-
+        // Création des sprites des cases noires 
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
         caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
 
+        // Création des sprites des contraintes (cercle + nombre)
         sf::CircleShape cercle(DIMCASE/2 - DIMCASE/20, 100);
         cercle.setFillColor(sf::Color::White);
         cercle.setOutlineThickness(-DIMCASE/25);
         cercle.setOutlineColor(sf::Color::Black);
-
         sf::Text texte;
         texte.setCharacterSize(DIMCASE-DIMCASE/4);
         sf::Font arial;
@@ -72,6 +73,7 @@ int main()
                 if (event.type == sf::Event::Closed) {
                     window.close();
                 }
+                // Clic gauche : change la couleur d'une case
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     modifiee = true;
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si il y a un clic gauche, noircir la case dans la grille
@@ -82,6 +84,7 @@ int main()
                         grille[coord.x][coord.y] = noir;
                     }
                 }
+                // Clic droit : permet d'ajouter des contraintes
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                     modifiee = true;
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si clic droit, créer contrainte
@@ -90,6 +93,7 @@ int main()
                     cin>>contrainte[2];
                     grille.appendContrainte(contrainte);
                 }
+                // Espace : une résolution de la grille (si existante) et affichée.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     if(modifiee) {
                         cout<<endl<<"Résolution en cours . . . . . "<<flush;
@@ -97,8 +101,17 @@ int main()
                         cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
                     }
                 }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                    cout << "chemin relatif ou absolu vers une grille : " << endl;
+                    string path;
+                    cin>>path;
+                    grille.fromFile(path);
+                    this_thread::sleep_for (std::chrono::seconds(1));
+                }
+                // On dessine le fond
                 window.clear(sf::Color::White);
                 window.draw(background);
+                // On dessine les cases noires
                 for (int i(0) ; i < TAILLE ; i++) {
                     for (int j(0) ; j < TAILLE ; j++) {
                         if (grille[i][j] == noir) {
@@ -107,6 +120,7 @@ int main()
                         }
                     }
                 }
+                // On dessines les cercles qui représentent les contraintes
                 const vector<array<int,3>> contraintes = grille.getContraintes();
                 for (auto c : contraintes) {
                     cercle.setPosition(c[0] * DIMCASE + DIMCASE / 20, c[1] * DIMCASE + DIMCASE / 20);
@@ -127,6 +141,7 @@ int main()
     return 0;
 }
 
+// Traduit une position dans la grille (en pixels) en des coordonnées dans la grille
 sf::Vector2<unsigned short> positionToCoord(sf::Vector2i position)
 {
     sf::Vector2<unsigned short> coord;

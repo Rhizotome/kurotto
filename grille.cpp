@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "grille.hpp"
 #include <algorithm> 
 #include <cmath>
@@ -99,6 +100,7 @@ Formule Grille::toFormule()const
     return Formule{contenu,{}};
 }
 
+// le littéral i représente le fait que la ième case (en comptant depuis en haut à gauche et en passant à la ligne à chaque fin de ligne) est noircie
 set<set<coordonnee>> Grille::forme(set<set<coordonnee>> centre, unsigned short nbCases)const
 {
     if (nbCases <= 0) {
@@ -150,6 +152,7 @@ set<coordonnee> Grille::bordure(const set<coordonnee> &centre)const
     return retour;
 }
 
+// le littéral i représente le fait que la ième case (en comptant depuis en haut à gauche et en passant à la ligne à chaque fin de ligne) est noircie
 litt Grille::toLitt(coordonnee c)const
 {
     return (unsigned short)(c[0] + taille * c[1] + 1);
@@ -182,4 +185,18 @@ void Grille::resoudre()
 
 unsigned long long int Grille::nombreSolutions()const{
     return nbSolutions;
+}
+
+void Grille::fromFile(string path){
+    contraintes.clear();
+    ifstream fichier (path);
+    if(!fichier.is_open()){
+        throw("fichier introuvable");
+    }
+    int i, j, p;
+    while (fichier >> i){
+        fichier >> j;
+        fichier >> p;
+        appendContrainte({j - 1,i - 1,p});
+    }
 }

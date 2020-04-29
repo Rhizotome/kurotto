@@ -5,6 +5,7 @@
 #include <array>
 #include <cassert>
 #include <unordered_set>
+#include <string>
 #include "formule.hpp"
 enum Etat {
     noir,
@@ -31,5 +32,6 @@ public:
     Formule toFormule()const;
     void resoudre(); // change le contenu de la grille pour en faire une solution
     unsigned long long int nombreSolutions()const; // renvoie le nombre de solution trouvées lors du dernier appel de resoudre()
+    void fromFile(std::string);
 };
 #endif

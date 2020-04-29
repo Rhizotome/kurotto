@@ -7,12 +7,14 @@
 #include <set>
 #include <mutex>
 #include "sparsepp/sparsepp/spp.h"
-using litt = char;
+
+using litt = unsigned short int;
 template <class T>
 using CInt = spp::sparse_hash_set<T>;
 template <class T>
 using CExt = std::vector<T>;
 
+// Représente une formule profondeur 3
 class Formule {
 public:
     CExt<CExt<CInt<litt>>> grille; 
