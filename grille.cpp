@@ -1,12 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include "grille.hpp"
-#include <algorithm> 
+#include <algorithm>
 #include <cmath>
 using namespace std;
 using coordonnee = array<unsigned short int,2>;
 
-void Grille::clear(){
+void Grille::clear()
+{
     contraintes.clear();
 }
 Grille::Grille(unsigned short int l, vector<array<int,3>> c): nbSolutions(0), taille(l), contraintes(c), cases(l)
@@ -171,13 +172,15 @@ coordonnee Grille::toCoord(litt l)const
 
 void Grille::resoudre()
 {
-    sort(contraintes.begin(),contraintes.end(),[](array<int,3>a, array<int,3>b){return a[2] < b[2];});
+    sort(contraintes.begin(),contraintes.end(),[](array<int,3>a, array<int,3>b) {
+        return a[2] < b[2];
+    });
     auto formule = toFormule();
     formule.resoudre();
     nbSolutions = 0;
-    std::for_each(formule.grilleResolue.begin(),formule.grilleResolue.end(),[&](auto i){
-                this->nbSolutions += pow(2.0,(pow(this->taille, 2) - i.size()));
-            });
+    std::for_each(formule.grilleResolue.begin(),formule.grilleResolue.end(),[&](auto i) {
+        this->nbSolutions += pow(2.0,(pow(this->taille, 2) - i.size()));
+    });
     if (formule.grilleResolue.size() >= 1) {
         for (auto i : formule.grilleResolue[0]) {
             auto c = this->toCoord(i);
@@ -186,20 +189,41 @@ void Grille::resoudre()
     }
 }
 
-unsigned long long int Grille::nombreSolutions()const{
+unsigned long long int Grille::nombreSolutions()const
+{
     return nbSolutions;
 }
 
-void Grille::fromFile(string path){
+void Grille::fromFile(string path)
+{
     contraintes.clear();
     ifstream fichier (path);
-    if(!fichier.is_open()){
+    if(!fichier.is_open()) {
         throw("fichier introuvable");
     }
     int i, j, p;
-    while (fichier >> i){
+    while (fichier >> i) {
         fichier >> j;
         fichier >> p;
         appendContrainte({j - 1,i - 1,p});
     }
+}
+
+void Grille::toFNC(ofstream &of)
+{
+    sort(contraintes.begin(), contraintes.end(), [](array<int,3>a, array<int,3>b) {
+        return a[2] < b[2];
+    });
+    auto formule = toFormule();
+    formule.resoudre();
+    formule.grille.clear();
+    for (auto i : formule.grilleResolue) {
+        CExt<CInt<litt>> sousFormule;
+        for (auto j : i) {
+            sousFormule.push_back({j});
+        }
+        formule.grille.push_back(sousFormule);
+    }
+    formule.resoudre();
+    of<<formule;
 }

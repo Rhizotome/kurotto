@@ -47,7 +47,7 @@ int main()
         backgroundTexture.setRepeated(true);
         sf::Sprite background(backgroundTexture,sf::IntRect(0,0,DIMX,DIMY));
 
-        // Création des sprites des cases noires 
+        // Création des sprites des cases noires
         sf::RectangleShape caseNoire(sf::Vector2f(DIMCASE,DIMCASE));
         caseNoire.setFillColor(sf::Color::Black); //on crée un sprite de carré noir pour couvrir les cases noircies
 
@@ -97,22 +97,26 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     if(modifiee) {
                         cout<<endl<<"Résolution en cours . . . . . "<<flush;
-                        grille.resoudre(); 
+                        grille.resoudre();
                         cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
                     }
                 }
-                // Entrée : charger une grille depuis un fichier
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                // F : charger une grille depuis un fichier
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
                     cout << "chemin relatif vers une grille : " << flush;
                     string path;
                     cin>>path;
                     grille.fromFile(path);
                     modifiee = true;
-                    this_thread::sleep_for(chrono::milliseconds(500)); // on attend une demi seconde pour ne pas capter deux fois l'input
                 }
                 // Backspace : clear la grille
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
                     grille.clear();
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                    ofstream of;
+                    of.open("out.txt");
+                    grille.toFNC(of);
                 }
                 // On dessine le fond
                 window.clear(sf::Color::White);
@@ -131,7 +135,7 @@ int main()
                 for (auto c : contraintes) {
                     cercle.setPosition(c[0] * DIMCASE + DIMCASE / 20, c[1] * DIMCASE + DIMCASE / 20);
                     window.draw(cercle);
-                    if (c[2] != -1){
+                    if (c[2] != -1) {
                         texte.setString(to_string(c[2]));
                         texte.setPosition(c[0] * DIMCASE + (c[2] / 10 >= 1 ? DIMCASE / 20 :  2 * DIMCASE / 7), c[1] * DIMCASE);
                         window.draw(texte);

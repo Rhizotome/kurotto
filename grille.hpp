@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <string>
 #include "formule.hpp"
+#include <fstream>
 enum Etat {
     noir,
     blanc,
@@ -34,5 +35,6 @@ public:
     unsigned long long int nombreSolutions()const; // renvoie le nombre de solution trouvées lors du dernier appel de resoudre()
     void fromFile(std::string);
     void clear();
+    void toFNC(std::ofstream&);
 };
 #endif

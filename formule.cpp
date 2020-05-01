@@ -42,7 +42,7 @@ ostream& operator<<(ostream& os, const Formule& item)
         for (auto j : i) {
             os << j << " ";
         }
-        os << endl;
+        os << " 0"<< endl;
     }
     return os;
 }
