@@ -10,6 +10,7 @@ void Grille::clear()
 {
     contraintes.clear();
 }
+
 Grille::Grille(unsigned short int l, vector<array<int,3>> c): nbSolutions(0), taille(l), contraintes(c), cases(l)
 {
     for (auto i : c) {
@@ -50,14 +51,14 @@ unsigned short Grille::tailleZone(set<coordonnee> centre)const
     for (auto c : centre) {
         for (auto coordVoisine : array<array<int,2>,4> {{{c[0]-1,c[1]},{c[0]+1,c[1]},{c[0],c[1]-1},{c[0],c[1]+1}}}) {
             try {
-                if (cases.at(coordVoisine[0]).at(coordVoisine[1]) == noir) {
+                if (cases.at(coordVoisine[0]).at(coordVoisine[1]) == noir) { // at throw une exception si lescoordonnées sont incorrectes, dans quel cas on ne fait rien
                     centre.emplace(coordonnee{(unsigned short)coordVoisine[0],(unsigned short)coordVoisine[1]});
                 }
             }
             catch(const out_of_range&) {}
         }
     }
-    return centre.size() == tailleCentreInitiale ? tailleCentreInitiale : tailleZone(centre);
+    return centre.size() == tailleCentreInitiale ? tailleCentreInitiale : tailleZone(centre); // appel récurrent
 }
 
 Formule Grille::toFormule()const
@@ -207,23 +208,4 @@ void Grille::fromFile(string path)
         fichier >> p;
         appendContrainte({j - 1,i - 1,p});
     }
-}
-
-void Grille::toFNC(ofstream &of)
-{
-    sort(contraintes.begin(), contraintes.end(), [](array<int,3>a, array<int,3>b) {
-        return a[2] < b[2];
-    });
-    auto formule = toFormule();
-    formule.resoudre();
-    formule.grille.clear();
-    for (auto i : formule.grilleResolue) {
-        CExt<CInt<litt>> sousFormule;
-        for (auto j : i) {
-            sousFormule.push_back({j});
-        }
-        formule.grille.push_back(sousFormule);
-    }
-    formule.resoudre();
-    of<<formule;
 }

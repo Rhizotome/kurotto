@@ -1,0 +1,7 @@
+[package]
+name = "3sat"
+version = "0.1.0"
+authors = ["Damis El Alami, Tanguy Freycon, Muaad Tamtam, Lorris Sahli"]
+edition = "2018"
+
+[dependencies]

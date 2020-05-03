@@ -5,6 +5,7 @@
 #include <functional>
 using namespace std;
 
+// Place la formule grille résolue dans grilleResolue; expliquée plus en détail dans le projet
 void Formule::resoudre()
 {
     const auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
@@ -36,6 +37,7 @@ void Formule::resoudre()
     }
 }
 
+// Affiche grille résolue dans un format similaire à un format dimacs
 ostream& operator<<(ostream& os, const Formule& item)
 {
     for (auto i : item.grilleResolue) {

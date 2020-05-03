@@ -15,7 +15,7 @@ int main()
 {
     try {
         bool modifiee = false;
-        cout<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Tapez entrée pour taper dans le terminal le chemin vers un fichier contenant les données des contraintes d'une grille (vous pouvez essayer exemple1.txt dans une grille de taille 5 ou exemple2.txt dans une grille de taille 6). Tapez Backspace pour supprimer toutes les contraintes. Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
+        cout<<endl<<"Solveur de Kurotto : pour entrer une grille, faites un clique droit sur une case puis tapez le nombre associé à la contrainte dans le terminal. Tapez -1 pour une contrainte vide. Tapez espace pour lancer la résolution. Tapez f pour taper dans le terminal le chemin vers un fichier contenant les données des contraintes d'une grille (vous pouvez essayer exemple1.txt dans une grille de taille 5 ou exemple2.txt dans une grille de taille 6). Tapez Backspace pour supprimer toutes les contraintes. Vous pouvez cliquez gauche pour changer la couleur d'une case, mais soyons honnêtes, ça ne sert pas à grand chose." << endl;
         cout<<"Entrez la taille de la grille : ";
         cin>>TAILLE;
         DIMCASE = 60; //largeur d'une case en pixels
@@ -113,11 +113,7 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
                     grille.clear();
                 }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-                    ofstream of;
-                    of.open("out.txt");
-                    grille.toFNC(of);
-                }
+
                 // On dessine le fond
                 window.clear(sf::Color::White);
                 window.draw(background);
