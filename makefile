@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -Wall -Wextra -std=c++20 -O3 -pthread -Wno-narrowing
 EXEC_NAME = Kurotto
 INCLUDES =
-LIBS = -ltgui -lsfml-graphics -lsfml-window -lsfml-system -lpthread -Wl,-rpath,.
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lpthread -Wl,-rpath,.
 SRC = $(wildcard *.cpp) 
 OBJ := $(SRC:%.cpp=%.o)
 
