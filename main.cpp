@@ -16,7 +16,7 @@ int main()
     try {
         bool modifiee = false;
         cout<<endl<<"Solveur de Kurotto : " << endl;
-        cout<<"Entrez la taille de la grille : ";
+        cout<<"Entrez la largeur de la grille : ";
         cin>>TAILLE;
         DIMCASE = 60; //largeur d'une case en pixels
         DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
