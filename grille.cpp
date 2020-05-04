@@ -106,6 +106,7 @@ Formule Grille::toFormule()const
 }
 
 // le littéral i représente le fait que la ième case (en comptant depuis en haut à gauche et en passant à la ligne à chaque fin de ligne) est noircie
+// Cette fonction renvoie l'ensemble des ensembles de points comprenant centre et de taille nbCases
 set<set<coordonnee>> Grille::forme(set<set<coordonnee>> centre, unsigned short nbCases)const
 {
     if (nbCases <= 0) {
@@ -136,6 +137,7 @@ set<set<coordonnee>> Grille::forme(set<set<coordonnee>> centre, unsigned short n
     return retour;
 }
 
+// Cette fonction renvoie l'ensemble des cellules qui sont en contact avec centre et ne sont pas dans centre 
 set<coordonnee> Grille::bordure(const set<coordonnee> &centre)const
 {
     set<coordonnee> retour{};
@@ -171,6 +173,7 @@ coordonnee Grille::toCoord(litt l)const
     return {(l - 1) % taille, (l - 1) / taille};
 }
 
+// On trie les contraintes par ordre de p croissants et on appelle resoudre sur une formule créée à partir de la grille puis on place une des réponses dans la grille
 void Grille::resoudre()
 {
     sort(contraintes.begin(),contraintes.end(),[](array<int,3>a, array<int,3>b) {
