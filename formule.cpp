@@ -14,9 +14,9 @@ void Formule::resoudre()
     grilleResolue.clear();
     CInt<litt> a{};
     grilleResolue.push_back(a);
+    vector<thread> threads(procCount);
     for (auto i : grille) {
         CExt<CInt<litt>> grilleResolueStep{};
-        vector<thread> threads(procCount);
         auto iter = threads.begin();
         for (auto j : grilleResolue) {
             if (iter->joinable())
@@ -62,7 +62,6 @@ void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CI
         auto j(sousFormuleGrilleResolue);
         for (auto l : k) {
             j.insert({l});
-
         }
         vectorLock.lock();
         grilleResolueStep.push_back(j);
