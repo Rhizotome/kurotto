@@ -8,7 +8,7 @@
 #include <mutex>
 #include "sparsepp/sparsepp/spp.h"
 
-using litt = short int;
+using litt = signed char;
 template <class T>
 using CInt = spp::sparse_hash_set<T>;
 template <class T>
