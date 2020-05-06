@@ -1,0 +1,2 @@
+Pour installer, installez rust et cargo depuis www.rust-lang.org. Tapez "cargo run" (sans les guillemets) suivi du nom d'un fichier pour transformer ce fichier en fnc donc chaque clause a 3 variables. Vous pouvez tapez "cargo run {nom du fichier d'entrée} > {nom du fichier de sortie}" pour placer la sortie dans le fichier indiqué.
+L'éxécutable peut aussi si trouver sous "target/debug/3sat".
