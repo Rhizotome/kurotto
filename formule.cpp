@@ -8,9 +8,9 @@ using namespace std;
 // Place la formule grille résolue dans grilleResolue; expliquée plus en détail dans le projet
 void Formule::resoudre()
 {
-    const auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
+    auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
     if (procCount == 0)
-        throw("Multithreading indisponible");
+        procCount = 1;
     grilleResolue.clear();
     CInt<litt> a{};
     grilleResolue.push_back(a);
