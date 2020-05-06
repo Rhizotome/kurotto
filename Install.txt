@@ -1,9 +1,8 @@
 # Prérequis
 Le programme nécessite pour fonctionner l'installation de la version 2.5.1 de la bibliothèque graphique SFML (https://www.sfml-dev.org/download/sfml/2.5.1/).
 Nous utilisons la bibliothèque sparsepp(https://github.com/greg7mdp/sparsepp), mais étant donné qu'elle est composée uniquement de headers, nous l'avons inclue dans cette archive.
-Pour la compilation, un compilateur avec accès au standard c++20 est nécessaire ; notre makefile utilise gcc 10.0.1.
-Le logiciel make doit de même être installé.
-Nous avons inclus une version compilé pour Linux au cas où notre makefile ne fonctionnerait pas.
+Pour la compilation, un compilateur avec accès au standard c++20 est nécessaire ; notre makefile utilise gcc 10.0.1 (https://gcc.gnu.org/git/gcc.git). Étant donné la taille de gcc, nous avons pris la liberté d'inclure l'exécutable compilé pour linux.
+Le logiciel make doit de même être installé. https://www.gnu.org/software/make/
 
 # Compilation
 Pour compiler, ouvrez un émulateur de terminal dans ce dossier, et tapez "make" (sans les guillemets).
