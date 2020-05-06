@@ -8,4 +8,4 @@ Une fenêtre affichant une grille vide devrait s'ouvrir, avec laquelle vous pour
 * Appuyez sur F pour entrer dans le terminal un chemin vers un fichier contenant des triplets de nombres séparés par des espaces et/ou des sauts à la ligne afin de construire les contraintes de la grille à partir de ce fichier de la manière suivante :
     -Toutes les contraintes existantes sont effacées
     -Chaque triplet i j p du fichier est interprété comme la contrainte (i,j,p)
-    -Vous pouvez entrer exemple1.txt dans une grille 5x5 ou exemple2.txt dans une grille 6x6 par exemple, ce sont deux ensembles de contraintes qui produisent chacun une seule solution
+    -Vous pouvez entrer exemple1.txt dans une grille 5x5 ou exemple2.txt dans une grille 6x6 ou exemple3.txt, ce sont des ensembles de contraintes qui produisent chacun une seule solution
