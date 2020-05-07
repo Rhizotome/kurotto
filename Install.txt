@@ -1,9 +1,9 @@
 # Prérequis
 Le programme nécessite pour fonctionner l'installation de la version 2.5.1 de la bibliothèque graphique SFML (https://www.sfml-dev.org/download/sfml/2.5.1/).
 Nous utilisons la bibliothèque sparsepp(https://github.com/greg7mdp/sparsepp), nous l'avons inclue dans l'archive et elle n'a pas besoin d'être installée.
-Pour la compilation, un compilateur avec accès au standard c++17 est nécessaire ; nous avons testé principalement avec gcc 10.0.1, mais toute version récente devrait suffire (https://gcc.gnu.org/). 
+Pour la compilation, un compilateur avec accès au standard c++17 est nécessaire ; nous avons testé principalement avec g++ 10.0.1, mais toute version récente devrait suffire (https://gcc.gnu.org/). 
 Cmake doit être installé (https://cmake.org).
-Tout cela se trouve dans le gestionnaire de paquets de la plupart des distributions linux.
+Tout cela se trouve dans le gestionnaire de paquets de la plupart des distributions linux. Par exemple sur Ubuntu, installez les paquets avec "sudo apt-get install libsfml-dev, g++, cmake, make" (sans les guillemets).
 
 # Compilation
 Pour compiler, ouvrez un émulateur de terminal dans ce dossier, et tapez "cmake . && make" (sans les guillemets).

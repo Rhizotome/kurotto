@@ -114,6 +114,7 @@ int main()
                 // Backspace : clear la grille
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
                     grille.clear();
+                    modifiee = true;
                 }
 
                 // On dessine le fond
