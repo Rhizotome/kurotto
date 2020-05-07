@@ -1,5 +1,5 @@
 Attention, ce programme a tendance a consommer très vite de très grandes quantités de RAM, il est donc conseillé au moins d'avoir un swapfile, vous pouvez appuyer sur ctrl + c pour interrompre le processus si il consomme trop de ressources ou trop de temps.
-Pour lancer le programme après compilation, ouvrez un émulateur de terminal dans ce dossier, et tapez "./Kurotto" (sans les guillemets), puis entrez la taille souhaitée pour la grille (par exemple 5 pour une grille 5*5.
+Pour lancer le programme après compilation, ouvrez un émulateur de terminal dans ce dossier, et tapez "./Kurotto" (sans les guillemets), puis entrez la taille souhaitée pour la grille (par exemple 5 pour une grille 5*5).
 Une fenêtre affichant une grille vide devrait s'ouvrir, avec laquelle vous pourrez interagir des manières suivantes :
 * Effectuez un clic droit sur une des cases, puis entrez un nombre naturel ou -1 dans le terminal afin de créer une contrainte
 * Effectuez un clic gauche sur une des cases pour changer la couleur de la case. Notre programme n'implémente pas de vérification des solutions de l'utilisateur, mais cela peut être utile pour tenter de résoudre une grille
