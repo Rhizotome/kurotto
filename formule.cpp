@@ -8,7 +8,7 @@ using namespace std;
 // Place la formule grille résolue dans grilleResolue; expliquée plus en détail dans le projet
 void Formule::resoudre()
 {
-    auto procCount = std::thread::hardware_concurrency(); //nombre de cœurs supportés par le système
+    auto procCount = std::thread::hardware_concurrency(); //nombre de threads supportés par le système
     if (procCount == 0)
         procCount = 1;
     grilleResolue.clear();
@@ -17,6 +17,7 @@ void Formule::resoudre()
     vector<thread> threads(procCount);
     for (auto i : grille) {
         CExt<CInt<litt>> grilleResolueStep{};
+        // ici, on répartit les tâches entre les threads
         auto iter = threads.begin();
         for (auto j : grilleResolue) {
             if (iter->joinable())
@@ -26,7 +27,8 @@ void Formule::resoudre()
             if (iter == threads.end())
                 iter = threads.begin();
         }
-        for (int i(0) ; i < procCount ; i++) {
+        // On attends que tous les threads soient terminés
+        for (auto i(0u) ; i < procCount ; i++) {
             iter++;
             if (iter == threads.end())
                 iter = threads.begin();
@@ -55,11 +57,13 @@ void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CI
 {
     for (auto k : sousFormule) {
         bool flag = false;
+        // On vérifie que les deux formules sont cohérentes (ie que leur conjonction ne soit pas toujours fausse)
         for (auto l : k) {
             flag = flag || (sousFormuleGrilleResolue.find(-l) != sousFormuleGrilleResolue.end());
         }
         if (flag) continue;
         auto j(sousFormuleGrilleResolue);
+        // Fusion des sousFormules
         for (auto l : k) {
             j.insert({l});
         }
