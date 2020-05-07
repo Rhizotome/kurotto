@@ -97,8 +97,10 @@ int main()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     if(modifiee) {
                         cout<<endl<<"Résolution en cours . . . . . "<<flush;
+                        auto temps_debut = chrono::steady_clock::now();
                         grille.resoudre();
-                        cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées."<<endl;
+                        auto temps_fin = chrono::steady_clock::now();
+                        cout<<"Terminé, "<<grille.nombreSolutions()<<" solutions trouvées en "<< chrono::duration_cast<chrono::duration<double>>(temps_fin-temps_debut).count() << " secondes." << endl;
                     }
                 }
                 // F : charger une grille depuis un fichier
