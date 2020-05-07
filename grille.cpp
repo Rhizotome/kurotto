@@ -182,6 +182,7 @@ void Grille::resoudre()
     auto formule = toFormule();
     formule.resoudre();
     nbSolutions = 0;
+    // On détermine le nombre de solution possible pour chaque solution trouvée à la formule
     std::for_each(formule.grilleResolue.begin(),formule.grilleResolue.end(),[&](auto i) {
         this->nbSolutions += pow(2.0,(pow(this->taille, 2) - i.size()));
     });
