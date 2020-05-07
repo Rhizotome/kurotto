@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -std=c++20 -O3 -pthread -Wno-narrowing
+CFLAGS = -Wall -Wextra -std=c++17 -O3 -pthread -Wno-narrowing
 EXEC_NAME = Kurotto
 INCLUDES =
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lpthread -Wl,-rpath,.

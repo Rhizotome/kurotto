@@ -56,7 +56,7 @@ void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CI
     for (auto k : sousFormule) {
         bool flag = false;
         for (auto l : k) {
-            flag = flag || sousFormuleGrilleResolue.contains(-l);
+            flag = flag || (sousFormuleGrilleResolue.find(-l) != sousFormuleGrilleResolue.end());
         }
         if (flag) continue;
         auto j(sousFormuleGrilleResolue);

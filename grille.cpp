@@ -152,7 +152,7 @@ set<coordonnee> Grille::bordure(const set<coordonnee> &centre)const
         if (i[1] < taille- 1)
             voisins.push_back({i[0],i[1]+1});
         for (auto j : voisins) {
-            if (!centre.contains(j))
+            if (centre.find(j)==centre.end())
                 retour.insert({j});
         }
     }
