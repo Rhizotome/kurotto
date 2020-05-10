@@ -19,7 +19,7 @@ void Formule::resoudre()
         CExt<CInt<litt>> grilleResolueStep{};
         // ici, on répartit les tâches entre les threads
         auto iter = threads.begin();
-        for (auto j : grilleResolue) {
+        for (auto &j : grilleResolue) {
             if (iter->joinable())
                 iter->join();
             *iter = thread(concurrentStep,j,ref(grilleResolueStep),i);
@@ -28,7 +28,7 @@ void Formule::resoudre()
                 iter = threads.begin();
         }
         // On attends que tous les threads soient terminés
-        for (auto i(0u) ; i < procCount ; i++) {
+        for (auto k(0u) ; k < procCount ; k++) {
             iter++;
             if (iter == threads.end())
                 iter = threads.begin();
@@ -55,7 +55,7 @@ mutex Formule::vectorLock;
 
 void Formule::concurrentStep(const CInt<litt> &sousFormuleGrilleResolue, CExt<CInt<litt>> &grilleResolueStep,const CExt<CInt<litt>>& sousFormule)
 {
-    for (auto k : sousFormule) {
+    for (auto &k : sousFormule) {
         bool flag = false;
         // On vérifie que les deux formules sont cohérentes (ie que leur conjonction ne soit pas toujours fausse)
         for (auto l : k) {
