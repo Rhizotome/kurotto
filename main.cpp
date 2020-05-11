@@ -18,7 +18,7 @@ int main()
         cout<<endl<<"Solveur de Kurotto : " << endl;
         cout<<"Entrez la largeur de la grille : ";
         cin>>TAILLE;
-        DIMCASE = 60; //largeur d'une case en pixels
+        DIMCASE = 120; //largeur d'une case en pixels
         DIMX = TAILLE * DIMCASE; // dimension x de la fenêtre
         DIMY = TAILLE * DIMCASE; // dimension y de la fenêtre
 
