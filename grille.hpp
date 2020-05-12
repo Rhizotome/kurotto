@@ -30,6 +30,7 @@ public:
     Grille(unsigned short int, std::vector<std::array<int,3>> = {}); // largeur de la grille, ensemble de contraintes
     std::vector<Etat>& operator[](int); // permet à grille de servir de wrapper autour de cases
     void appendContrainte(std::array<int,3>);
+    bool removeContrainte(int,int);
     const std::vector<std::array<int,3>>& getContraintes()const;
     Formule toFormule()const; // renvoie la modélisation correspondant à la grille stockée
     void resoudre(); // change le contenu de la grille pour en faire une solution

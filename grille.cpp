@@ -35,6 +35,22 @@ void Grille::appendContrainte(array<int,3> newContrainte)
     contraintes.push_back(newContrainte);
 }
 
+bool Grille::removeContrainte(int x, int y)
+{
+    auto iter = contraintes.begin();
+    for (auto contr : contraintes){
+        if (contr[0] == x && contr[1] == y){
+            break;
+        }
+        iter++;
+    }
+    if (iter != contraintes.end()){
+        contraintes.erase(iter);
+        return true;
+    }
+    return false;
+}
+
 const vector<array<int,3>>& Grille::getContraintes()const
 {
     return contraintes;

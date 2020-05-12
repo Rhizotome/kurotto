@@ -88,10 +88,13 @@ int main()
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                     modifiee = true;
                     auto coord = positionToCoord(sf::Mouse::getPosition(window));// si clic droit, créer contrainte
-                    array<int,3> contrainte{coord.x,coord.y,-1};
-                    cout<< "p : ";
-                    cin>>contrainte[2];
-                    grille.appendContrainte(contrainte);
+                    if (grille.removeContrainte(coord.x,coord.y)){}
+                    else{
+                        array<int,3> contrainte{coord.x,coord.y,-1};
+                        cout<< "p : ";
+                        cin>>contrainte[2];
+                        grille.appendContrainte(contrainte);
+                    }
                 }
                 // Espace : une résolution de la grille (si existante) et affichée.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
